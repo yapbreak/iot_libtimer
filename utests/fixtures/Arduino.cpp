@@ -45,14 +45,14 @@ unsigned long millis()
 {
     fixtures *f = fixtures::getInstance();
 
-    return f->get_millis();
+    return static_cast<uint32_t>(f->get_millis());
 }
 
 unsigned long micros()
 {
     fixtures *f = fixtures::getInstance();
 
-    return f->get_micros();
+    return static_cast<uint32_t>(f->get_micros());
 }
 
 void pinMode(uint8_t pin, uint8_t mode)

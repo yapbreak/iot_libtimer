@@ -46,3 +46,17 @@ void loop()
     // Process timer.
     timer->loop();
 }
+
+#ifndef ARDUINO
+int main(int argc, const char *argv[])
+{
+    (void) argc;
+    (void) argv;
+
+    setup();
+    for (;;)
+        loop();
+
+    return 0;
+}
+#endif

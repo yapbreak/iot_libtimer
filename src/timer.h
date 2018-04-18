@@ -16,14 +16,14 @@ class arduino_event_t {
         int32_t m_count;
         bool m_overflow;
         uint32_t m_waiting_time;
-        timer_callback_t m_callback;
+        const timer_callback_t m_callback;
         void *m_arg;
 
     public:
         arduino_event_t(uint32_t wait_time,
                         const char *wait_time_unit,
                         int count,
-                        timer_callback_t callback,
+                        const timer_callback_t &callback,
                         void *arg);
 
         ~arduino_event_t();
@@ -38,7 +38,6 @@ class arduino_event_t {
 
 class arduino_timer_t {
     private:
-        size_t m_event_max;
         uint32_t m_last_time_seen;
         std::list<arduino_event_t> m_event_list;
 

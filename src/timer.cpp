@@ -5,30 +5,33 @@
 arduino_event_t::arduino_event_t(uint32_t wait_time,
                 const char *wait_time_unit,
                 int count,
-                timer_callback_t callback,
+                const timer_callback_t &callback,
                 void *arg)
     : m_count(count)
     , m_callback(callback)
     , m_arg(arg)
 {
     uint32_t current = micros();
+    uint64_t waiting_time_micros = 0;
 
     if (strcmp(wait_time_unit, "s") == 0)
         /* Seconds */
-        m_waiting_time = wait_time * 1000000LL;
+        waiting_time_micros = wait_time * 1000000LL;
     else if (strcmp(wait_time_unit, "ms") == 0)
         /* Milliseconds */
-        m_waiting_time = wait_time * 1000LL;
+        waiting_time_micros = wait_time * 1000LL;
     else if (strcmp(wait_time_unit, "us") == 0)
         /* Microseconds */
-        m_waiting_time = wait_time;
-    else
-        m_waiting_time = 0;
+        waiting_time_micros = wait_time;
 
-    if (m_waiting_time != 0) {
+    if (waiting_time_micros != 0) {
+        m_waiting_time = static_cast<uint32_t>(waiting_time_micros);
         m_activation = current + m_waiting_time;
-        m_overflow = (m_activation < current);
+        m_overflow =    (m_activation < current)
+                    ||  (static_cast<uint64_t>(m_waiting_time)
+                            != waiting_time_micros);
     } else {
+        m_waiting_time = 0;
         m_activation = 0;
         m_overflow = false;
     }
@@ -92,7 +95,9 @@ void arduino_timer_t::loop()
     for (auto it = m_event_list.begin(); it != m_event_list.end(); ++it) {
         bool to_delete = it->process(m_last_time_seen, overflow_decrement);
         if (to_delete) {
-            m_event_list.remove(*it);
+            // Hack system to avoid invalidation of `it` in loop.
+            auto oldit = it--;
+            m_event_list.erase(oldit);
         }
     }
 }
