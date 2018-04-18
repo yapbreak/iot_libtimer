@@ -1,0 +1,97 @@
+# http://www.gnu.org/software/automake
+Makefile.in
+Makefile
+
+# http://www.gnu.org/software/autoconf
+/autom4te.cache
+/autoscan.log
+/autoscan-*.log
+/aclocal.m4
+/compile
+config.h.in
+/configure
+/configure.scan
+/config.guess
+/config.log
+/config.status
+/config.sub
+/configure.ac
+libtool
+ltmain.sh
+/depcomp
+/install-sh
+/missing
+/stamp-h1
+/ar-lib
+.deps/
+.libs/
+config.h
+stamp-h1
+*.log
+*.trs
+test-driver
+*.m4
+INSTALL
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.x
+*.xtest
+
+# Debug files
+*.dSYM/
+*.su
+
+# Coverage files
+*.gcda
+*.gcno
+coverage-report*
+
+# Compiled object files
+*.slo
+
+# Editor buffer
+*~
+*.sw?
+
+# Distribution package archive
+*.tar
+*.tar
+*.tar.*
+
+# CppUTest xml report
+cpputest*.xml
+
+# Build folder
+build/
+
+# Doxygen
+doc/html
+doc/Doxyfile

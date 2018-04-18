@@ -1,0 +1,52 @@
+stages:
+    - build
+    - test
+    - deploy
+
+build:
+    stage: build
+    script:
+        - ./autogen.sh
+        - ./configure
+        - make
+
+check:
+    stage: test
+    script:
+        - ./autogen.sh
+        - ./configure --enable-coverage
+        - make
+        - make check
+        - make coverage | tail -10
+    dependencies:
+        - build
+
+distribute:
+    stage: deploy
+    script:
+        - ./autogen.sh
+        - ./configure
+        - make dist
+    artifacts:
+        paths:
+            - libtimer-*.tar.gz
+        expire_in: 1 week
+    except:
+        - tags
+    dependencies:
+        - build
+
+distribute-release:
+    stage: deploy
+    script:
+        - ./autogen.sh
+        - ./configure
+        - make dist
+    artifacts:
+        paths:
+            - libtimer-*.tar.gz
+    only:
+        - tags
+    dependencies:
+        - check
+

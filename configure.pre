@@ -1,0 +1,177 @@
+AC_PREREQ([2.69])
+AC_INIT()
+AM_INIT_AUTOMAKE([-Wall -Werror])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_SRCDIR([src/timer.h])
+AC_CONFIG_HEADERS([src/config.h])
+AC_PREFIX_DEFAULT(/usr/local)
+
+VERSION_CURRENT=___CURRENT___
+VERSION_REVISION=___REVISION___
+VERSION_AGE=___AGE___
+
+AC_SUBST(VERSION_CURRENT)
+AC_SUBST(VERSION_REVISION)
+AC_SUBST(VERSION_AGE)
+
+# Checks for programs
+AC_PROG_CXX
+AC_PROG_CC
+AM_PROG_AR
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+LT_INIT
+
+# Checks for libraries
+extra_CFLAGS=""
+extra_CXXFLAGS=""
+extra_LDFLAGS=""
+
+compiler_generic_flags=""
+compiler_c_flags=""
+compiler_cxx_flags=""
+
+GCC_VERSION=""
+GCC_VERSION_MAJOR=0
+GCC_VERSION_MINOR=0
+GCC_VERSION_PATCH=0
+
+AS_IF([test "x$GCC" = "xyes"], [
+    GCC_VERSION="$($CC -dumpversion)"
+    GCC_VERSION_MAJOR=$(echo $GCC_VERSION | cut -d'.' -f1)
+    GCC_VERSION_MINOR=$(echo $GCC_VERSION | cut -d'.' -f2)
+    GCC_VERSION_PATCH=$(echo $GCC_VERSION | cut -d'.' -f3)
+])
+
+
+AS_IF([test $GCC_VERSION_MAJOR -ge 3], [
+    compiler_generic_flags+="-Wshadow "
+    compiler_generic_flags+="-Wformat=2 "
+    compiler_cxx_flags+="-Wold-style-cast "
+])
+AS_IF([test $GCC_VERSION_MAJOR -ge 4], [
+    AS_IF([test $GCC_VERSION_MAJOR -gt 4 -o $GCC_VERSION_MINOR -ge 3], [
+        compiler_generic_flags+="-Wlogical-op "
+    ])
+    AS_IF([test $GCC_VERSION_MAJOR -gt 4 -o $GCC_VERSION_MINOR -ge 5], [
+        compiler_generic_flags+="-Wdouble-promotion "
+        compiler_c_flags+="-Wjump-misses-init "
+    ])
+    AS_IF([test $GCC_VERSION_MAJOR -gt 4 -o $GCC_VERSION_MINOR -ge 8], [
+        compiler_cxx_flags+="-Wuseless-cast "
+    ])
+])
+AS_IF([test $GCC_VERSION_MAJOR -ge 6], [
+    compiler_generic_flags+="-Wduplicated-cond "
+    compiler_generic_flags+="-Wnull-dereference "
+])
+AS_IF([test $GCC_VERSION_MAJOR -ge 7], [
+    compiler_generic_flags+="-Wduplicated-branches "
+    compiler_generic_flags+="-Wrestrict "
+])
+
+# Debug flags
+AC_ARG_ENABLE(debug,
+              AS_HELP_STRING([--enable-debug],
+                             [enable debugging [default: no]]),
+              [],
+              [enable_debug=no])
+AM_CONDITIONAL(DEBUG, test "x${enable_debug}" = "xyes")
+AM_COND_IF(DEBUG,
+           [AC_DEFINE(__DEBUG__, 1, [Define to 0 if this is a release build])
+            extra_CFLAGS+="-Werror -g $compiler_generic_flags $compiler_c_flags"
+            extra_CXXFLAGS+="-Werror -g $compiler_generic_flags $compiler_cxx_flags"
+           ]
+)
+
+# Coverage flags
+AC_ARG_ENABLE([coverage],
+              AS_HELP_STRING([--enable-coverage],
+                             [enable coverage report while testing [default: no]]),
+              [],
+              [enable_coverage=no])
+AS_IF([test "x$GCC" = "xyes"],
+      [AM_CONDITIONAL(COVERAGE, test "x${enable_coverage}" = "xyes")
+       AM_COND_IF(COVERAGE,
+                  [extra_CFLAGS+="--coverage "
+                   extra_CXXFLAGS+="--coverage "
+                   extra_LDFLAGS+="-lgcov "
+                  ])
+      ],
+      [AC_MSG_WARN([Coverage is currently not supported with a compiler other than GCC])]
+)
+
+# Profiling flags
+AC_ARG_ENABLE([profile],
+              AS_HELP_STRING([--enable-profile],
+                             [enable profiling functions while testing [default: no]]),
+              [],
+              [enable_profile=no])
+AS_IF([test "x$GCC" = "xyes"],
+      [AM_CONDITIONAL(PROFILE, test "x${enable_profile}" = "xyes")
+       AM_COND_IF(PROFILE,
+                  [extra_CFLAGS+="-pg "
+                   extra_CXXFLAGS+="-pg "
+                  ])
+      ],
+      [AC_MSG_WARN([Profiling is currently not supported with a compiler other than GCC])]
+)
+
+# Allow user to install test (mainly usefull for CI platform)
+AC_ARG_WITH([install-test],
+            AS_HELP_STRING([--with-install-test],
+                           [install test program in PREFIX/bin]))
+AM_CONDITIONAL(INSTALLTEST, test "x${with_install_test}" = "xtrue")
+
+AC_SUBST([extra_CFLAGS])
+AC_SUBST([extra_CXXFLAGS])
+AC_SUBST([extra_LDFLAGS])
+
+# Checks for header files
+AC_CHECK_HEADERS([stdint.h ])
+
+# Checks for typedefs, structures, and compiler characteristics
+AC_C_INLINE
+AC_TYPE_SIZE_T
+AC_CHECK_HEADER_STDBOOL
+AC_CHECK_TYPES([uint8_t])
+# TODO: complete
+
+# Checks for library functions
+#AC_FUNC_MALLOC
+#AC_CHECK_FUNC([memcpy printf])
+#AC_CHECK_FUNC([strerror_r])
+# TODO: complete
+
+# Check if test utility are present
+PKG_CHECK_MODULES([CPPUTEST], [cpputest], [have_cpputest=yes], [have_cpputest=no])
+AM_CONDITIONAL([CPPUTEST], [test "x${have_cpputest}" = "xyes"])
+AS_IF([test "x$have_cpputest" = "xno"],
+      [AC_MSG_WARN([Please install CppUTest package to get support of unit tests.])])
+
+# Check coverage tools
+AC_CHECK_PROG([gcovr], [gcovr], [yes])
+AM_CONDITIONAL(GCOVR, [test "x${gcovr}" = "xyes"])
+AC_CHECK_PROG([lcov], [lcov], [yes])
+AM_CONDITIONAL(LCOV, [test "x${lcov}" = "xyes"])
+AC_CHECK_PROG([genhtml], [genhtml], [yes])
+AM_CONDITIONAL(GENHTML, [test "x${genhtml}" = "xyes"])
+AM_CONDITIONAL(PERLGD, [perldoc -l GD])
+
+# Check doxygen installation
+AC_CHECK_PROG([doxygen], [doxygen], [yes])
+AM_CONDITIONAL(DOXYGEN, [test "x${doxygen}" = "xyes"])
+
+# Generate files
+AC_CONFIG_FILES([Makefile
+                 utests/Makefile
+                 utests/fixtures/Makefile
+                 src/Makefile
+                 doc/Makefile
+                 doc/Doxyfile
+                ])
+
+AM_SILENT_RULES([yes])
+AC_OUTPUT
+
+# vi:syntax=config

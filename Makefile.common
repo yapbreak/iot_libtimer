@@ -1,0 +1,17 @@
+AM_CFLAGS = -std=c11 -Wall -Wextra ${extra_CFLAGS}
+AM_CXXFLAGS = -std=c++11 -Wall -Wextra ${extra_CXXFLAGS}
+AM_LDFLAGS = ${extra_LDFLAGS}
+
+AM_CFLAGS += -I$(top_srcdir)/src
+AM_CFLAGS += -I$(top_builddir)/src
+AM_CFLAGS += -I$(top_builddir)/utests
+AM_CFLAGS += -I$(top_srcdir)/utests/fixtures
+AM_CFLAGS += -include $(top_builddir)/src/config.h
+AM_CXXFLAGS += -I$(top_srcdir)/src
+AM_CXXFLAGS += -I$(top_builddir)/src
+AM_CXXFLAGS += -I$(top_builddir)/utests
+AM_CXXFLAGS += -I$(top_srcdir)/utests/fixtures
+AM_CXXFLAGS += -include $(top_builddir)/src/config.h
+AM_LDFLAGS += -L$(top_builddir)
+
+

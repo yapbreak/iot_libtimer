@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ ! -x /usr/bin/cppcheck ]; then
+    echo "No cppcheck found"
+    exit 127
+fi
+
+output=plain
+if [ -n "$1" ]; then
+    case "$1" in
+        "xml")
+            output=xml
+            shift
+            ;;
+        "plain")
+            output=plain
+            shift
+            ;;
+    esac
+fi
+
+declare -a OUTPUT_FLAGS
+if [ "$output" == "xml" ]; then
+    OUTPUT_FLAGS=("--xml" "--xml-version=2")
+fi
+
+/usr/bin/cppcheck --enable=all --verbose --quiet \
+                  --suppress=missingIncludeSystem \
+                  -I./src \
+                  -I./utests/fixtures \
+                  --inline-suppr \
+                  -DHAVE_SOCAT=1 \
+                  "${OUTPUT_FLAGS[@]}" \
+                  "$@" \
+                  src/ examples/

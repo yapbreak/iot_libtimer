@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <cstring>
 #include "timer.h"
 
 arduino_event_t::arduino_event_t(uint32_t wait_time,
@@ -10,7 +11,6 @@ arduino_event_t::arduino_event_t(uint32_t wait_time,
     , m_callback(callback)
     , m_arg(arg)
 {
-    uint32_t next_trigger = 0;
     uint32_t current = micros();
 
     if (strcmp(wait_time_unit, "s") == 0)

@@ -1,0 +1,10 @@
+include $(top_srcdir)/Makefile.common
+
+TEST_ROOT = $(top_srcdir)/utests
+
+TESTCFLAGS = $(AM_CFLAGS)\
+			 $(CPPUTEST_CFLAGS)
+TESTCXXFLAGS = $(AM_CXXFLAGS)\
+			   $(CPPUTEST_CFLAGS)
+
+TESTLDFLAGS = $(AM_LDFLAGS) $(CPPUTEST_LIBS)
