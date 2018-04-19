@@ -1,3 +1,6 @@
+[![pipeline status](https://gitlab.yapbreak.fr/iot/libtimer/badges/master/pipeline.svg)](https://gitlab.yapbreak.fr/iot/libtimer/commits/master)
+[![coverage report](https://gitlab.yapbreak.fr/iot/libtimer/badges/master/coverage.svg)](https://gitlab.yapbreak.fr/iot/libtimer/commits/master)
+
 This is a Timer librarie for any embedded board that supports Arduino
 framework.
 
