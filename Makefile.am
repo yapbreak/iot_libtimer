@@ -53,6 +53,17 @@ genhtml-coverage-report:
 
 endif # LCOV
 
+if LCOV_COBERTURA
+
+lcov-cobertura-report:
+	lcov_cobertura "coverage-report.info" -o "coverage-report.xml"
+
+gcovr-coverage-report:
+
+else # LCOV_COBERTURA
+
+lcov-cobertura-report:
+
 if GCOVR
 
 gcovr-coverage-report:
@@ -63,10 +74,12 @@ gcovr-coverage-report:
 
 endif # GCOVR
 
+endif # LCOV_COBERTURA
+
 
 coverage-clean: lcov-coverage-clean
 
-coverage-report: lcov-coverage-filter genhtml-coverage-report gcovr-coverage-report
+coverage-report: lcov-coverage-filter genhtml-coverage-report lcov-cobertura-report gcovr-coverage-report
 
 coverage: coverage-clean check coverage-report
 
@@ -76,6 +89,7 @@ ALLPHONY += lcov-coverage-clean
 ALLPHONY += lcov-coverage-filter
 ALLPHONY += genhtml-coverage-report
 ALLPHONY += gcovr-coverage-report
+ALLPHONY += lcov-cobertura-report
 
 else # COVERAGE
 

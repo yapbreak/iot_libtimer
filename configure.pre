@@ -152,6 +152,8 @@ AS_IF([test "x$have_cpputest" = "xno"],
 # Check coverage tools
 AC_CHECK_PROG([gcovr], [gcovr], [yes])
 AM_CONDITIONAL(GCOVR, [test "x${gcovr}" = "xyes"])
+AC_CHECK_PROG([lcov_cobertura], [lcov_cobertura], [yes])
+AM_CONDITIONAL(LCOV_COBERTURA, [test "x${lcov_cobertura}" = "xyes"])
 AC_CHECK_PROG([lcov], [lcov], [yes])
 AM_CONDITIONAL(LCOV, [test "x${lcov}" = "xyes"])
 AC_CHECK_PROG([genhtml], [genhtml], [yes])
