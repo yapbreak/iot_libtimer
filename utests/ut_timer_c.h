@@ -5,7 +5,6 @@
 #include "timer.h"
 #include "Arduino.h"
 
-
 TEST_GROUP(timer_c)
 {
     void setup()
@@ -165,6 +164,93 @@ TEST(timer_c, overflow_late)
     f.set_micros(f.get_micros() + 1);
     arduino_timer_process(timer);
     LONGS_EQUAL(1, count);
+}
+
+TEST(timer_c, twoevents)
+{
+    int many_count[2] = { };
+
+    f.set_micros(0);
+    for (int i = 0; i < 2; i++) {
+        arduino_timer_create_event(timer, i + 1, "ms", 1, event_counter_c, &many_count[i]);
+    }
+    arduino_timer_process(timer);
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
+}
+
+TEST(timer_c, tenevents)
+{
+    int many_count[10] = { };
+
+    f.set_micros(0);
+    for (int i = 0; i < 10; i++) {
+        arduino_timer_create_event(timer, i + 1, "ms", 1, event_counter_c, &many_count[i]);
+    }
+    arduino_timer_process(timer);
+    for (int i = 0; i < 10; i++) {
+        LONGS_EQUAL(0, many_count[i]);
+    }
+
+    f.set_micros(10001);
+    arduino_timer_process(timer);
+
+    for (int i = 0; i < 10; i++) {
+        LONGS_EQUAL(1, many_count[i]);
+    }
+}
+
+TEST(timer_c, twoevents_reverse)
+{
+    int many_count[2] = { };
+
+    f.set_micros(0);
+    for (int i = 0; i < 2; i++) {
+        arduino_timer_create_event(timer, 2 - i, "ms", 1, event_counter_c, &many_count[i]);
+    }
+    arduino_timer_process(timer);
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    arduino_timer_process(timer);
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
 }
 
 #endif /* end of include guard: UT_TIMER_C_H_ET7NC52L */

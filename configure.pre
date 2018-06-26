@@ -129,6 +129,11 @@ AC_SUBST([extra_LDFLAGS])
 
 # Checks for header files
 AC_CHECK_HEADERS([stdint.h ])
+AC_CHECK_HEADERS([string.h ])
+AC_CHECK_HEADERS([Arduino.h],
+                 [],
+                 [AC_DEFINE([SIMULATE], [1],
+                            [Defined on platform without Arduino framework])])
 
 # Checks for typedefs, structures, and compiler characteristics
 AC_C_INLINE
@@ -159,13 +164,16 @@ AM_CONDITIONAL(LCOV, [test "x${lcov}" = "xyes"])
 AC_CHECK_PROG([genhtml], [genhtml], [yes])
 AM_CONDITIONAL(GENHTML, [test "x${genhtml}" = "xyes"])
 AM_CONDITIONAL(PERLGD, [perldoc -l GD])
+AC_CHECK_PROG([platformio], [platformio], [yes])
+AM_CONDITIONAL(PLATFORMIO, [test "x${platformio}" = "xyes"])
 
 # Check doxygen installation
 AC_CHECK_PROG([doxygen], [doxygen], [yes])
 AM_CONDITIONAL(DOXYGEN, [test "x${doxygen}" = "xyes"])
 
 # Generate files
-AC_CONFIG_FILES([Makefile
+AC_CONFIG_FILES([platformio.ini
+                 Makefile
                  utests/Makefile
                  utests/fixtures/Makefile
                  src/Makefile

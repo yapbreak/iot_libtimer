@@ -3,43 +3,16 @@
 
 #ifdef __cplusplus
 
-#include <functional>
-#include <list>
+#include <stdlib.h>
 
-typedef std::function<void(void *)> timer_callback_t;
-
-class arduino_timer_t;
-
-class arduino_event_t {
-    private:
-        uint32_t m_activation;
-        int32_t m_count;
-        bool m_overflow;
-        uint32_t m_waiting_time;
-        const timer_callback_t m_callback;
-        void *m_arg;
-
-    public:
-        arduino_event_t(uint32_t wait_time,
-                        const char *wait_time_unit,
-                        int count,
-                        const timer_callback_t &callback,
-                        void *arg);
-
-        ~arduino_event_t();
-        bool operator==(const arduino_event_t &obj) const;
-
-    protected:
-
-        bool process(uint32_t current, bool overflow);
-
-        friend class arduino_timer_t;
-};
+#include "event.h"
 
 class arduino_timer_t {
     private:
         uint32_t m_last_time_seen;
-        std::list<arduino_event_t> m_event_list;
+        arduino_event_t **m_event_list;
+        size_t m_event_count;
+        size_t m_event_size;
 
     public:
         explicit arduino_timer_t();

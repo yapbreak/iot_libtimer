@@ -41,14 +41,14 @@ int digitalRead(uint8_t pin)
     return f->get_actual_digital_value(pin);
 }
 
-unsigned long millis()
+extern "C" unsigned long millis()
 {
     fixtures *f = fixtures::getInstance();
 
     return static_cast<uint32_t>(f->get_millis());
 }
 
-unsigned long micros()
+extern "C" unsigned long micros()
 {
     fixtures *f = fixtures::getInstance();
 

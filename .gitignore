@@ -95,3 +95,7 @@ build/
 # Doxygen
 doc/html
 doc/Doxyfile
+platformio.ini
+
+.pioenvs
+timertest

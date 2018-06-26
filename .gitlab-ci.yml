@@ -1,3 +1,6 @@
+before_script:
+    - ./autogen.sh
+
 stages:
     - build
     - test
@@ -6,25 +9,19 @@ stages:
 build:
     stage: build
     script:
-        - ./autogen.sh
         - ./configure
         - make
+        - make firmware
 
 check:
     stage: test
     script:
-        - ./autogen.sh
         - ./configure --enable-coverage
-        - make
-        - make check
         - make coverage | tail -10
-    dependencies:
-        - build
 
 distribute:
     stage: deploy
     script:
-        - ./autogen.sh
         - ./configure
         - make dist
     artifacts:
@@ -33,13 +30,10 @@ distribute:
         expire_in: 1 week
     except:
         - tags
-    dependencies:
-        - build
 
 distribute-release:
     stage: deploy
     script:
-        - ./autogen.sh
         - ./configure
         - make dist
     artifacts:
@@ -47,6 +41,4 @@ distribute-release:
             - libtimer-*.tar.gz
     only:
         - tags
-    dependencies:
-        - check
 

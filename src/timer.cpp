@@ -1,89 +1,60 @@
+#ifndef SIMULATE
 #include <Arduino.h>
-#include <cstring>
+#else
+#include "simulate.h"
+#endif
+
+#include <string.h>
+
 #include "timer.h"
 
-arduino_event_t::arduino_event_t(uint32_t wait_time,
-                const char *wait_time_unit,
-                int count,
-                const timer_callback_t &callback,
-                void *arg)
-    : m_count(count)
-    , m_callback(callback)
-    , m_arg(arg)
+#ifdef __ARDUINO_TIMER_DEBUG__
+#include <stdio.h>
+void dump_event_list(arduino_event_t **list, size_t count, size_t size)
 {
-    uint32_t current = micros();
-    uint64_t waiting_time_micros = 0;
-
-    if (strcmp(wait_time_unit, "s") == 0)
-        /* Seconds */
-        waiting_time_micros = wait_time * 1000000LL;
-    else if (strcmp(wait_time_unit, "ms") == 0)
-        /* Milliseconds */
-        waiting_time_micros = wait_time * 1000LL;
-    else if (strcmp(wait_time_unit, "us") == 0)
-        /* Microseconds */
-        waiting_time_micros = wait_time;
-
-    if (waiting_time_micros != 0) {
-        m_waiting_time = static_cast<uint32_t>(waiting_time_micros);
-        m_activation = current + m_waiting_time;
-        m_overflow =    (m_activation < current)
-                    ||  (static_cast<uint64_t>(m_waiting_time)
-                            != waiting_time_micros);
-    } else {
-        m_waiting_time = 0;
-        m_activation = 0;
-        m_overflow = false;
+    printf("Event list #%lu / #%lu\n", count, size);
+    printf("/-+------+--------------------\\\n");
+    for (size_t i = 0; i < size; ++i) {
+        char valid = i < count ? 'X' : ' ';
+        printf("|%c| %4lu | %18p |\n",
+                valid, i, list[i]);
     }
+    printf("\\-+------+--------------------/\n");
 }
-
-arduino_event_t::~arduino_event_t()
-{
-
-}
-
-bool arduino_event_t::process(uint32_t current, bool overflow)
-{
-    if (overflow)
-        m_overflow = false;
-
-    if (m_activation != 0 && m_activation <= current && !m_overflow) {
-        m_callback(m_arg);
-        if (m_count > 0)
-            m_count--;
-        if (m_count == 0) {
-            m_activation = 0;
-        } else {
-            m_activation = current + m_waiting_time;
-            m_overflow = (m_activation < current);
-        }
-    }
-
-    return (m_activation == 0);
-}
-
-bool arduino_event_t::operator==(const arduino_event_t &obj) const
-{
-    return  m_arg == obj.m_arg
-        && m_activation == obj.m_activation
-        && m_count == obj.m_count
-        && m_overflow == obj.m_overflow
-        && m_waiting_time == obj.m_waiting_time;
-}
+#else
+#define dump_event_list(list, count, size)
+#endif
 
 arduino_timer_t::arduino_timer_t()
     : m_last_time_seen(micros())
-    , m_event_list()
+    , m_event_list(NULL)
+    , m_event_count(0)
+    , m_event_size(1)
 {
+    m_event_list = new arduino_event_t *[m_event_size];
 }
 
 arduino_timer_t::~arduino_timer_t()
 {
+    for (size_t i = 0; i < m_event_count; ++i) {
+        delete m_event_list[i];
+    }
+    delete [] m_event_list;
 }
 
 void arduino_timer_t::add_event(arduino_event_t event)
 {
-    m_event_list.push_back(event);
+    if (m_event_count == m_event_size) {
+        size_t new_size = m_event_size * 2;
+        arduino_event_t **list = new arduino_event_t *[new_size];
+        memcpy(list, m_event_list, m_event_size * sizeof(arduino_event_t *));
+        delete [] m_event_list;
+        m_event_list = list;
+        m_event_size = new_size;
+    }
+
+    m_event_list[m_event_count] = new arduino_event_t(event);
+    m_event_count++;
 }
 
 void arduino_timer_t::loop()
@@ -92,12 +63,20 @@ void arduino_timer_t::loop()
     bool overflow_decrement = (m_last_time_seen > current);
 
     m_last_time_seen = current;
-    for (auto it = m_event_list.begin(); it != m_event_list.end(); ++it) {
-        bool to_delete = it->process(m_last_time_seen, overflow_decrement);
+
+    for (size_t i = 0; i < m_event_count; ++i) {
+        bool to_delete = m_event_list[i]->process(m_last_time_seen,
+                                                  overflow_decrement);
+        dump_event_list(m_event_list, m_event_count, m_event_size);
         if (to_delete) {
-            // Hack system to avoid invalidation of `it` in loop.
-            auto oldit = it--;
-            m_event_list.erase(oldit);
+            delete m_event_list[i];
+            for (size_t j = i; j < m_event_count - 1; ++j) {
+                m_event_list[j] = m_event_list[j + 1];
+            }
+            i--;
+            m_event_count--;
+            m_event_list[m_event_count] = NULL;
+            dump_event_list(m_event_list, m_event_count, m_event_size);
         }
     }
 }

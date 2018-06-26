@@ -239,4 +239,92 @@ TEST(timer, overflow_late)
     LONGS_EQUAL(1, count);
 }
 
+TEST(timer, twoevents)
+{
+    int many_count[2] = { };
+
+    f.set_micros(0);
+    for (int i = 0; i < 2; i++) {
+        timer->add_event(arduino_event_t(i + 1, "ms", 1, event_counter, &many_count[i]));
+    }
+    timer->loop();
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    timer->loop();
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    timer->loop();
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    timer->loop();
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    timer->loop();
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
+}
+
+TEST(timer, tenevents)
+{
+    int many_count[10] = { };
+
+    f.set_micros(0);
+    for (int i = 0; i < 10; i++) {
+        timer->add_event(arduino_event_t(i + 1, "ms", 1, event_counter, &many_count[i]));
+    }
+    timer->loop();
+    for (int i = 0; i < 10; i++) {
+        LONGS_EQUAL(0, many_count[i]);
+    }
+
+    f.set_micros(10001);
+    timer->loop();
+
+    for (int i = 0; i < 10; i++) {
+        LONGS_EQUAL(1, many_count[i]);
+    }
+}
+
+TEST(timer, twoevents_reverse)
+{
+    int many_count[2] = { };
+
+    f.set_micros(0);
+    for (int i = 0; i < 2; i++) {
+        timer->add_event(arduino_event_t(2 - i, "ms", 1, event_counter, &many_count[i]));
+    }
+    timer->loop();
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    timer->loop();
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(0, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    timer->loop();
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
+
+    f.set_micros(f.get_micros() + 999);
+    timer->loop();
+    LONGS_EQUAL(0, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
+
+    f.set_micros(f.get_micros() + 1);
+    timer->loop();
+    LONGS_EQUAL(1, many_count[0]);
+    LONGS_EQUAL(1, many_count[1]);
+}
+
+
 #endif /* end of include guard: UT_TIMER_H_PTS0JNL4 */

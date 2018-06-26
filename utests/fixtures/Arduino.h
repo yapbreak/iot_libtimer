@@ -29,8 +29,8 @@ void pinMode(uint8_t pin, uint8_t mode);
 /********************
 *  Arduino timing  *
 ********************/
-unsigned long millis();
-unsigned long micros();
+extern "C" unsigned long millis();
+extern "C" unsigned long micros();
 
 #ifndef __cplusplus
 };
