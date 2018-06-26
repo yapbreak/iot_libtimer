@@ -88,3 +88,16 @@ bool arduino_event_t::operator==(const arduino_event_t &obj) const
         && m_waiting_time == obj.m_waiting_time;
 }
 
+arduino_event_t &arduino_event_t::operator=(const arduino_event_t &obj)
+{
+    uint32_t current = micros();
+
+    m_count = obj.m_count;
+    m_callback = obj.m_callback;
+    m_arg = obj.m_arg;
+    m_waiting_time = obj.m_waiting_time;
+    m_activation = current + m_waiting_time;
+    m_overflow = (m_activation < current);
+
+    return (*this);
+}

@@ -3,7 +3,7 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = @PACKAGE_NAME@
 PROJECT_NUMBER         = @PACKAGE_VERSION@
 PROJECT_BRIEF          = "PlatformIO library to handle timers"
-PROJECT_LOGO           = @abs_top_srcdir@/doc/img/timer.png
+PROJECT_LOGO           = @abs_top_srcdir@/doc/img/timer_64.png
 OUTPUT_DIRECTORY       = @abs_top_builddir@/doc
 CREATE_SUBDIRS         = YES
 ALLOW_UNICODE_NAMES    = NO
@@ -114,11 +114,9 @@ WARN_LOGFILE           =
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = @abs_top_srcdir@/src @abs_top_srcdir@/examples
+INPUT                  = @abs_top_srcdir@/src
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.c \
-                         *.cpp \
-                         *.h
+FILE_PATTERNS          = *.h
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO

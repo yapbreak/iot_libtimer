@@ -34,6 +34,18 @@ arduino_timer_t::arduino_timer_t()
     m_event_list = new arduino_event_t *[m_event_size];
 }
 
+arduino_timer_t::arduino_timer_t(const arduino_timer_t &obj)
+    : m_last_time_seen(obj.m_last_time_seen)
+    , m_event_list(NULL)
+    , m_event_count(obj.m_event_count)
+    , m_event_size(obj.m_event_size)
+{
+    m_event_list = new arduino_event_t *[m_event_size];
+    for (size_t i = 0; i < m_event_count; ++i) {
+        m_event_list[i] = new arduino_event_t(*(obj.m_event_list[i]));
+    }
+}
+
 arduino_timer_t::~arduino_timer_t()
 {
     for (size_t i = 0; i < m_event_count; ++i) {
@@ -79,6 +91,27 @@ void arduino_timer_t::loop()
             dump_event_list(m_event_list, m_event_count, m_event_size);
         }
     }
+}
+
+arduino_timer_t &arduino_timer_t::operator=(const arduino_timer_t &obj)
+{
+    if (&obj == this)
+        return (*this);
+
+    m_last_time_seen = obj.m_last_time_seen;
+    for (size_t i = 0; i < m_event_count; ++i) {
+        delete m_event_list[i];
+    }
+    delete [] m_event_list;
+
+    m_event_count = obj.m_event_count;
+    m_event_size = obj.m_event_size;
+    m_event_list = new arduino_event_t *[m_event_size];
+    for (size_t i = 0; i < m_event_count; ++i) {
+        m_event_list[i] = new arduino_event_t(*(obj.m_event_list[i]));
+    }
+
+    return (*this);
 }
 
 /**********************************************************************
