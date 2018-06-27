@@ -9,7 +9,7 @@ See examples folder to know how to use.
 This library is released under the terms of WTF-PL:
 
 ```
- Copyright (C) 2017 Adrien Oliva <olivaa+gitlab@yapbreak.fr>
+ Copyright (C) 2018 Adrien Oliva <olivaa+gitlab@yapbreak.fr>
 
  Everyone is permitted to copy and distribute verbatim or modified
  copies of this license document, and changing it is allowed as long

@@ -26,10 +26,12 @@ void pinMode(uint8_t pin, uint8_t mode)
     printf("Set pin#%d to %c\n", pin, mode);
 }
 
+/*
 void analogWrite(uint8_t pin, uint8_t value)
 {
     printf("Write on pin#%d to 0x%x\n", pin, value);
 }
+*/
 
 void digitalWrite(uint8_t pin, uint8_t value)
 {
@@ -46,6 +48,7 @@ void digitalWrite(uint8_t pin, uint8_t value)
     }
 }
 
+/*
 unsigned long millis()
 {
     struct timespec time;
@@ -54,6 +57,7 @@ unsigned long millis()
 
     return (time.tv_sec * 1000) + (time.tv_nsec % 1000000);
 }
+*/
 
 unsigned long micros()
 {

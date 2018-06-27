@@ -1,8 +1,8 @@
-name=timer
-version=1.0.0
+name=@PACKAGE_NAME@
+version=@PACKAGE_VERSION@
 author=YapBreak
-maintainer=YapBreak <olivaa+gitlab@yapbreak.fr>
+maintainer=YapBreak <@PACKAGE_BUGREPORT@>
 sentence=Timer library for any board Arduino framework compatible.
 paragraph=Simple timer library that allow executing any fuction at a given time or periodically.
 category=timer
-url=https://gitlab.yapbreak.fr/iot/libtimer.git
+url=@PACKAGE_URL@

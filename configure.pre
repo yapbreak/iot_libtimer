@@ -1,6 +1,6 @@
 AC_PREREQ([2.69])
 AC_INIT()
-AM_INIT_AUTOMAKE([-Wall -Werror])
+AM_INIT_AUTOMAKE([-Wall -Werror subdir-objects])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/timer.h])
 AC_CONFIG_HEADERS([src/config.h])
@@ -173,10 +173,12 @@ AM_CONDITIONAL(DOXYGEN, [test "x${doxygen}" = "xyes"])
 
 # Generate files
 AC_CONFIG_FILES([platformio.ini
+                 library.properties
                  Makefile
                  utests/Makefile
                  utests/fixtures/Makefile
                  src/Makefile
+                 simulation/Makefile
                  doc/Makefile
                  doc/Doxyfile
                 ])

@@ -25,6 +25,7 @@ ltmain.sh
 /ar-lib
 .deps/
 .libs/
+.dirstamp
 config.h
 stamp-h1
 *.log
@@ -99,3 +100,5 @@ platformio.ini
 
 .pioenvs
 timertest
+
+library.properties

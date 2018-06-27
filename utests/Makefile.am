@@ -10,7 +10,9 @@ noinst_PROGRAMS = $(TESTS)
 
 check_PROGRAMS = $(TESTS)
 
-ut_timer_xtest_SOURCES = ut_timer.h
+ut_timer_xtest_SOURCES  = ut_event.h
+ut_timer_xtest_SOURCES += ut_timer.h
+ut_timer_xtest_SOURCES += ut_timer_c.h
 ut_timer_xtest_SOURCES += main.cpp
 ut_timer_xtest_CFLAGS = $(TESTCFLAGS)
 ut_timer_xtest_CXXFLAGS = $(TESTCXXFLAGS)

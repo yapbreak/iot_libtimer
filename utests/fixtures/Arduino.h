@@ -1,12 +1,15 @@
 #ifndef ARDUINO_H_NID3LW9T
 #define ARDUINO_H_NID3LW9T
 
-#ifndef __cplusplus
+#ifdef __cplusplus
+#include <map>
+#include <iostream>
+#include <string>
+
 extern "C"
 {
 #endif
 
-#include <CppUTest/TestHarness.h>
 #include <stdint.h>
 
 /* Arduino fixtures */
@@ -29,15 +32,12 @@ void pinMode(uint8_t pin, uint8_t mode);
 /********************
 *  Arduino timing  *
 ********************/
-extern "C" unsigned long millis();
-extern "C" unsigned long micros();
+unsigned long millis();
+unsigned long micros();
 
-#ifndef __cplusplus
+#ifdef __cplusplus
 };
-#else
-#include <map>
-#include <iostream>
-#include <string>
+
 
 /*******************
 *  Test fixtures  *
