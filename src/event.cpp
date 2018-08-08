@@ -1,8 +1,4 @@
-#ifndef SIMULATE
 #include <Arduino.h>
-#else
-#include "simulation/simulate.h"
-#endif
 
 #include <string.h>
 

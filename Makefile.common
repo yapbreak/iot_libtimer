@@ -4,12 +4,14 @@ AM_LDFLAGS = ${extra_LDFLAGS}
 
 AM_CFLAGS += -I$(top_srcdir)/src
 AM_CFLAGS += -I$(top_srcdir)/
+AM_CFLAGS += -I$(top_srcdir)/simulation
 AM_CFLAGS += -I$(top_builddir)/src
 AM_CFLAGS += -include $(top_builddir)/src/config.h
+AM_CFLAGS += $(ARDSIM_CFLAGS)
 AM_CXXFLAGS += -I$(top_srcdir)/src
 AM_CXXFLAGS += -I$(top_srcdir)/
+AM_CXXFLAGS += -I$(top_srcdir)/simulation
 AM_CXXFLAGS += -I$(top_builddir)/src
 AM_CXXFLAGS += -include $(top_builddir)/src/config.h
+AM_CXXFLAGS += $(ARDSIM_CFLAGS)
 AM_LDFLAGS += -L$(top_builddir)
-
-

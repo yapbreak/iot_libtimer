@@ -3,7 +3,9 @@ ACLOCAL_AMFLAGS = -I m4
 include Makefile.common
 
 SOURCE_DIR  = src
+if ARDSIM
 SOURCE_DIR += simulation
+endif
 if CPPUTEST
 SOURCE_DIR += utests
 endif

@@ -130,10 +130,6 @@ AC_SUBST([extra_LDFLAGS])
 # Checks for header files
 AC_CHECK_HEADERS([stdint.h ])
 AC_CHECK_HEADERS([string.h ])
-AC_CHECK_HEADERS([Arduino.h],
-                 [],
-                 [AC_DEFINE([SIMULATE], [1],
-                            [Defined on platform without Arduino framework])])
 
 # Checks for typedefs, structures, and compiler characteristics
 AC_C_INLINE
@@ -153,6 +149,11 @@ PKG_CHECK_MODULES([CPPUTEST], [cpputest], [have_cpputest=yes], [have_cpputest=no
 AM_CONDITIONAL([CPPUTEST], [test "x${have_cpputest}" = "xyes"])
 AS_IF([test "x$have_cpputest" = "xno"],
       [AC_MSG_WARN([Please install CppUTest package to get support of unit tests.])])
+PKG_CHECK_MODULES([ARDSIM], [ardsim >= 0.0.4], [have_ardsim=yes], [have_ardsim=no])
+AM_CONDITIONAL([ARDSIM], [test "x${have_ardsim}" = "xyes"])
+AS_IF([test "x$have_ardsim" = "xno"],
+      [AC_MSG_WARN([Please install Ardsim library from https://gitlab.yapbreak.fr/libraries/libardsim])],
+      [AC_DEFINE([HAVE_ARDSIM], [1], [Define if Arduino simulator is available])])
 
 # Check coverage tools
 AC_CHECK_PROG([gcovr], [gcovr], [yes])

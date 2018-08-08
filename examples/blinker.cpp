@@ -29,7 +29,7 @@ void blink(void *data)
     digitalWrite(LED_PIN, (*state));
 }
 
-void setup()
+extern "C" void setup()
 {
     pinMode(LED_PIN, OUTPUT);
 
@@ -41,22 +41,8 @@ void setup()
     timer->add_event(arduino_event_t(1, "s", -1, blink, &led_state));
 }
 
-void loop()
+extern "C" void loop()
 {
     // Process timer.
     timer->loop();
 }
-
-#ifndef ARDUINO
-int main(int argc, const char *argv[])
-{
-    (void) argc;
-    (void) argv;
-
-    setup();
-    for (;;)
-        loop();
-
-    return 0;
-}
-#endif

@@ -30,7 +30,6 @@ fi
                   -I./src \
                   -I./utests/fixtures \
                   --inline-suppr \
-                  -DSIMULATE \
                   "${OUTPUT_FLAGS[@]}" \
                   "$@" \
                   src/ simulation/ examples/
