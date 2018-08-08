@@ -29,6 +29,7 @@ void blink(void *data)
     digitalWrite(LED_PIN, (*state));
 }
 
+// cppcheck-suppress unusedFunction
 void setup()
 {
     pinMode(LED_PIN, OUTPUT);

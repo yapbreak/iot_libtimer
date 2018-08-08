@@ -8,11 +8,11 @@
 #include <stdio.h>
 void dump_event_list(arduino_event_t **list, size_t count, size_t size)
 {
-    printf("Event list #%lu / #%lu\n", count, size);
+    printf("Event list #%zu / #%zu\n", count, size);
     printf("/-+------+--------------------\\\n");
     for (size_t i = 0; i < size; ++i) {
         char valid = i < count ? 'X' : ' ';
-        printf("|%c| %4lu | %18p |\n",
+        printf("|%c| %4zu | %18p |\n",
                 valid, i, list[i]);
     }
     printf("\\-+------+--------------------/\n");
@@ -119,6 +119,7 @@ arduino_opaque_timer_t arduino_timer_create()
     return static_cast<arduino_opaque_timer_t>(new arduino_timer_t());
 }
 
+// cppcheck-suppress unusedFunction
 void arduino_timer_destroy(arduino_opaque_timer_t timer)
 {
     delete static_cast<arduino_timer_t *>(timer);
