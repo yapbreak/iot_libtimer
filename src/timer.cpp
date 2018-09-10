@@ -4,23 +4,6 @@
 
 #include "timer.h"
 
-#ifdef __ARDUINO_TIMER_DEBUG__
-#include <stdio.h>
-void dump_event_list(arduino_event_t **list, size_t count, size_t size)
-{
-    printf("Event list #%zu / #%zu\n", count, size);
-    printf("/-+------+--------------------\\\n");
-    for (size_t i = 0; i < size; ++i) {
-        char valid = i < count ? 'X' : ' ';
-        printf("|%c| %4zu | %18p |\n",
-                valid, i, list[i]);
-    }
-    printf("\\-+------+--------------------/\n");
-}
-#else
-#define dump_event_list(list, count, size)
-#endif
-
 arduino_timer_t::arduino_timer_t()
     : m_last_time_seen(micros())
     , m_event_list(NULL)
@@ -75,7 +58,6 @@ void arduino_timer_t::loop()
     for (size_t i = 0; i < m_event_count; ++i) {
         bool to_delete = m_event_list[i]->process(m_last_time_seen,
                                                   overflow_decrement);
-        dump_event_list(m_event_list, m_event_count, m_event_size);
         if (to_delete) {
             delete m_event_list[i];
             for (size_t j = i; j < m_event_count - 1; ++j) {
@@ -84,7 +66,6 @@ void arduino_timer_t::loop()
             i--;
             m_event_count--;
             m_event_list[m_event_count] = NULL;
-            dump_event_list(m_event_list, m_event_count, m_event_size);
         }
     }
 }
@@ -108,6 +89,25 @@ arduino_timer_t &arduino_timer_t::operator=(const arduino_timer_t &obj)
     }
 
     return (*this);
+}
+
+size_t arduino_timer_t::printTo(Print &p) const
+{
+    size_t length = 0;
+    length += p.print("Event list #");
+    length += p.print(m_event_count);
+    length += p.print(" / #");
+    length += p.println(m_event_size);
+    length += p.println("/-+------+--------------------\\");
+    for (size_t i = 0; i < m_event_size; ++i) {
+        char valid = i < m_event_count ? 'X' : ' ';
+        char buffer[48];
+        sprintf(buffer, "|%c| %4zu | %18p |", valid, i, m_event_list[i]);
+        length += p.println(buffer);
+    }
+    length += p.println("\\-+------+--------------------/");
+
+    return length;
 }
 
 /**********************************************************************

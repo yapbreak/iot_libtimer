@@ -19,6 +19,7 @@ void blink(void *data)
 
 extern "C" void setup()
 {
+    Serial.begin(9600);
     pinMode(LED_PIN, OUTPUT);
 
     // Create a new timer that can handle at most 1 event.
@@ -33,5 +34,7 @@ extern "C" void loop()
 {
     // Process timer.
     timer->loop();
+    Serial.print((*timer));
+    delay(1000);
 }
 #endif

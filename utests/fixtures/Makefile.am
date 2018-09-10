@@ -4,6 +4,8 @@ include $(top_srcdir)/utests/Makefile.test.common
 
 noinst_LTLIBRARIES = libfixtures.la
 libfixtures_la_SOURCES  = Arduino.h
+libfixtures_la_SOURCES += Print.h
+libfixtures_la_SOURCES += Printable.h
 libfixtures_la_SOURCES += Arduino.cpp
 libfixtures_la_CFLAGS = $(TESTCFLAGS)
 libfixtures_la_CXXFLAGS = $(TESTCXXFLAGS)

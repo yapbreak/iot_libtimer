@@ -6,11 +6,12 @@
 #include <stdlib.h>
 
 #include "event.h"
+#include <Printable.h>
 
 /**
 * @brief Main timer C++ interface.
 */
-class arduino_timer_t {
+class arduino_timer_t : public Printable {
     private:
         /**
         * @brief Store timestamp where timer was last processed.
@@ -44,7 +45,7 @@ class arduino_timer_t {
         /**
         * @brief Default timer descructor.
         */
-        ~arduino_timer_t();
+        virtual ~arduino_timer_t();
 
         /**
         * @brief Register a new event to be controlled by this timer.
@@ -65,6 +66,8 @@ class arduino_timer_t {
         * @return Reference to the newly affected timer.
         */
         arduino_timer_t &operator=(const arduino_timer_t &obj);
+
+        virtual size_t printTo(Print &p) const override;
 };
 
 extern "C"
