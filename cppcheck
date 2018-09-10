@@ -30,6 +30,7 @@ fi
                   -I./src \
                   -I./utests/fixtures \
                   --inline-suppr \
+                  -DHAVE_ARDSIM=0 \
                   "${OUTPUT_FLAGS[@]}" \
                   "$@" \
                   src/ simulation/ examples/

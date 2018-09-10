@@ -322,5 +322,39 @@ TEST(timer, twoevents_reverse)
     LONGS_EQUAL(1, many_count[1]);
 }
 
+TEST_GROUP(timerprint)
+{
+    void setup()
+    {
+        fixtures::registerInstance(f);
+        timer = new arduino_timer_t();
+    }
+
+    void teardown()
+    {
+        delete timer;
+        timer = NULL;
+        mem.clear();
+    }
+
+    fixtures f;
+    memory mem;
+    arduino_timer_t *timer;
+};
+
+TEST(timerprint, noevent)
+{
+    timer->printTo(mem);
+    STRCMP_CONTAINS("Event list #0 / #1\n", mem.getcontent().c_str());
+    STRCMP_CONTAINS("| |    0 |", mem.getcontent().c_str());
+};
+
+TEST(timerprint, oneevent)
+{
+    timer->add_event(arduino_event_t(1, "ms", 1, event_counter, NULL));
+    timer->printTo(mem);
+    STRCMP_CONTAINS("Event list #1 / #1\n", mem.getcontent().c_str());
+    STRCMP_CONTAINS("|X|    0 |", mem.getcontent().c_str());
+};
 
 #endif /* end of include guard: UT_TIMER_H_PTS0JNL4 */
