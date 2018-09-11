@@ -1,0 +1,13 @@
+{
+    "name": "@PACKAGE_NAME@",
+    "keywords": "simple,timer,yapbreak",
+    "description": "Timer library for any board Arduino framework compatible.",
+    "version": "@PACKAGE_VERSION@",
+    "authors": {
+        "name": "YapBreak",
+        "email": "@PACKAGE_BUGREPORT@"
+    },
+    "downloadUrl": "@PACKAGE_URL@/-/jobs/artifacts/master/download?job=distribute",
+    "frameworks": "arduino",
+    "platforms": "*"
+}

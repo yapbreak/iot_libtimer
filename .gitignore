@@ -102,3 +102,4 @@ platformio.ini
 timertest
 
 library.properties
+library.json

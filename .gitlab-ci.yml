@@ -31,6 +31,14 @@ distribute:
     except:
         - tags
 
+distributejson:
+    stage: deploy
+    script:
+        - ./configure
+    artifacts:
+        paths:
+            - library.json
+
 distribute-release:
     stage: deploy
     script:
