@@ -1,10 +1,11 @@
-#if defined(TESTFIRMWARE)
-
 #include <Arduino.h>
+#include <timer.h>
 
-#include "timer.h"
-
-#define LED_PIN (2)
+#ifdef D8
+#define LED_PIN (D8)
+#else
+#define LED_PIN (8)
+#endif
 
 static uint8_t led_state = LOW;
 arduino_timer_t *timer = NULL;
@@ -28,6 +29,11 @@ extern "C" void setup()
     // Associate "blink" event in previously create timer.
     // This event will happen in 1s, and repeated continuously (-1).
     timer->add_event(arduino_event_t(1, "s", -1, blink, &led_state));
+
+    // Allow printing event queue on a Print instance
+    timer->printTo(Serial);
+    // Or through Printable interface
+    Serial.println(*timer);
 }
 
 extern "C" void loop()
@@ -37,4 +43,3 @@ extern "C" void loop()
     Serial.print((*timer));
     delay(1000);
 }
-#endif

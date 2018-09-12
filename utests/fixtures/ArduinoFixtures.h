@@ -1,8 +1,6 @@
 #ifndef ARDUINO_H_NID3LW9T
 #define ARDUINO_H_NID3LW9T
 
-#ifdef __cplusplus
-
 #include <map>
 #include <iostream>
 #include <string>
@@ -11,45 +9,13 @@
 
 #include "config.h"
 
-#include "Print.h"
-#include "Printable.h"
-
-extern "C"
-{
-#endif
-
-#include <stdint.h>
-
-/* Arduino fixtures */
-
-/********************
-*  Arduino wiring  *
-********************/
-void analogWrite(uint8_t pin, uint8_t value);
-void digitalWrite(uint8_t pin, uint8_t value);
-int digitalRead(uint8_t pin);
-#define LOW 25
-#define HIGH 90
-
-#define OUTPUT ('O')
-#define INPUT  ('I')
-#define NOTSET ('X')
-#define UNDEFINED (0xffff)
-void pinMode(uint8_t pin, uint8_t mode);
-
-/********************
-*  Arduino timing  *
-********************/
-unsigned long millis();
-unsigned long micros();
-
-#ifdef __cplusplus
-};
-
+#include <Arduino.h>
 
 /*******************
 *  Test fixtures  *
 *******************/
+#define NOTSET ('X')
+#define UNDEFINED (0xffff)
 
 struct pin_attribute_t
 {
@@ -196,7 +162,5 @@ class memory : public Print {
         std::stringstream m_str;
         FILE *m_null;
 };
-
-#endif
 
 #endif /* end of include guard: ARDUINO_H_NID3LW9T */

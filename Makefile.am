@@ -3,6 +3,7 @@ ACLOCAL_AMFLAGS = -I m4
 include Makefile.common
 
 SOURCE_DIR  = src
+SOURCE_DIR += doc
 if ARDSIM
 SOURCE_DIR += simulation
 endif
@@ -16,6 +17,12 @@ ALLPHONY = coverage doc
 
 doc:
 	@(cd doc && $(MAKE) $@)
+
+if ARDSIM
+else
+install:
+	@(echo "Please install libArdsim")
+endif
 
 if COVERAGE
 

@@ -1,6 +1,5 @@
-#include "Arduino.h"
-#include "timer.h"
-#include <time.h>
+#ifdef SIMULATE
+#include <Arduino.h>
 #include <stdio.h>
 
 extern "C" void setup();
@@ -13,3 +12,4 @@ int main(int argc, const char *argv[])
 
     return ardsim_run();
 }
+#endif

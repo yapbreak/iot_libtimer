@@ -3,7 +3,7 @@
 
 #include <CppUTest/TestHarness.h>
 #include "timer.h"
-#include "Arduino.h"
+#include "ArduinoFixtures.h"
 
 TEST_GROUP(timer_c)
 {
