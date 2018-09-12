@@ -7,7 +7,7 @@
         "name": "YapBreak",
         "email": "@PACKAGE_BUGREPORT@"
     },
-    "downloadUrl": "@PACKAGE_URL@/-/jobs/artifacts/master/download?job=distribute",
+    "downloadUrl": "https://ci.yapbreak.fr/job/release_manager/job/@PACKAGE_NAME@/lastSuccessfulBuild/artifact/@PACKAGE_NAME@-@PACKAGE_VERSION.tar.gz",
     "frameworks": "arduino",
     "platforms": "*"
 }
