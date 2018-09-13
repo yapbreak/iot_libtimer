@@ -1,12 +1,15 @@
 ; PlatformIO Project Configuration File
+[platformio]
+src_dir = simulation
+lib_dir = .
+include_dir =
+
 [env:witty]
 platform = espressif8266
 board = nodemcuv2
 framework = arduino
-build_flags = -DTESTFIRMWARE
 
 [env:uno]
 platform = atmelavr
 board = uno
 framework = arduino
-build_flags = -DTESTFIRMWARE

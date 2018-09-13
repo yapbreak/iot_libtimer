@@ -103,3 +103,4 @@ timertest
 
 library.properties
 library.json
+*.pc

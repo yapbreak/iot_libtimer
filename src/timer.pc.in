@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@prefix@
+libdir=@libdir@/yapiot
+includedir=@includedir@/yapiot/@PACKAGE_NAME@
+
+Name: @PACKAGE_NAME@
+Description: Arduino simple timer library
+URL: @PACKAGE_URL@
+Version: @VERSION@
+
+Requires:
+Libs: -L${libdir} -ltimer @ARDSIM_LIBS@
+Cflags: -I${includedir} @ARDSIM_CFLAGS@

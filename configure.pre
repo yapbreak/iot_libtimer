@@ -149,11 +149,10 @@ PKG_CHECK_MODULES([CPPUTEST], [cpputest], [have_cpputest=yes], [have_cpputest=no
 AM_CONDITIONAL([CPPUTEST], [test "x${have_cpputest}" = "xyes"])
 AS_IF([test "x$have_cpputest" = "xno"],
       [AC_MSG_WARN([Please install CppUTest package to get support of unit tests.])])
-PKG_CHECK_MODULES([ARDSIM], [ardsim >= 0.0.4], [have_ardsim=yes], [have_ardsim=no])
+PKG_CHECK_MODULES([ARDSIM], [ardsim >= 0.0.5], [have_ardsim=yes], [have_ardsim=no])
 AM_CONDITIONAL([ARDSIM], [test "x${have_ardsim}" = "xyes"])
 AS_IF([test "x$have_ardsim" = "xno"],
-      [AC_MSG_WARN([Please install Ardsim library from https://gitlab.yapbreak.fr/libraries/libardsim])],
-      [AC_DEFINE([HAVE_ARDSIM], [1], [Define if Arduino simulator is available])])
+      [AC_MSG_ERROR([Please install Ardsim library from https://gitlab.yapbreak.fr/libraries/libardsim])])
 
 # Check coverage tools
 AC_CHECK_PROG([gcovr], [gcovr], [yes])
@@ -180,6 +179,7 @@ AC_CONFIG_FILES([platformio.ini
                  utests/Makefile
                  utests/fixtures/Makefile
                  src/Makefile
+                 src/timer.pc
                  simulation/Makefile
                  doc/Makefile
                  doc/Doxyfile

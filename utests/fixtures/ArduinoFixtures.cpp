@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
-#include "Arduino.h"
+#include "ArduinoFixtures.h"
 #include <CppUTest/TestHarness.h>
 
 fixtures *fixtures::s_fixtures;

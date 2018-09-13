@@ -29,8 +29,8 @@ fi
                   -I./src/.. \
                   -I./src \
                   -I./utests/fixtures \
+                  -DD8=8 \
                   --inline-suppr \
-                  -DHAVE_ARDSIM=0 \
                   "${OUTPUT_FLAGS[@]}" \
                   "$@" \
                   src/ simulation/ examples/

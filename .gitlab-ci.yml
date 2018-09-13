@@ -1,52 +1,19 @@
 before_script:
+    - curl -o libardsim-last.tar.gz https://ci.yapbreak.fr/job/libraries/job/LibArdsim/lastSuccessfulBuild/artifact/libardsim-last.tar.gz
+    - tar xzf libardsim-last.tar.gz
+    - (cd libardsim-*/ && ./configure --prefix=/tmp/libardsim && make && make install)
+    - rm -rf libardsim-*
     - ./autogen.sh
 
 stages:
     - build
-    - test
-    - deploy
 
 build:
     stage: build
     script:
-        - ./configure
+        - PKG_CONFIG_PATH=/tmp/libardsim/lib/pkgconfig ./configure
         - make
         - make firmware
-
-check:
-    stage: test
-    script:
-        - ./configure --enable-coverage
+        - make clean
+        - PKG_CONFIG_PATH=/tmp/libardsim/lib/pkgconfig ./configure --enable-coverage
         - make coverage | tail -10
-
-distribute:
-    stage: deploy
-    script:
-        - ./configure
-        - make dist
-    artifacts:
-        paths:
-            - libtimer-*.tar.gz
-        expire_in: 1 week
-    except:
-        - tags
-
-distributejson:
-    stage: deploy
-    script:
-        - ./configure
-    artifacts:
-        paths:
-            - library.json
-
-distribute-release:
-    stage: deploy
-    script:
-        - ./configure
-        - make dist
-    artifacts:
-        paths:
-            - libtimer-*.tar.gz
-    only:
-        - tags
-
