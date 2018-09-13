@@ -1,10 +1,8 @@
 #include <Arduino.h>
 #include <timer.h>
 
-#ifdef D8
-#define LED_PIN (D8)
-#else
-#define LED_PIN (8)
+#ifndef LED_PIN
+#define LED_PIN (15)
 #endif
 
 static uint8_t led_state = LOW;
