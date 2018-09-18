@@ -14,7 +14,13 @@
     "license": "WTF-PL",
     "homepage": "@PACKAGE_URL@",
     "examples": [
-        "examples/blinker.c",
-        "examples/blinker.cpp"
-    ]
+        "examples/*.c",
+        "examples/*.cpp"
+    ],
+    "export": {
+        "include": [
+            "src/*.h",
+            "src/*.cpp"
+        ]
+    }
 }
