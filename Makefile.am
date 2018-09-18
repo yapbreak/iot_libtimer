@@ -134,3 +134,6 @@ ALLPHONY += firmware
 ALLPHONY += upload
 
 .PHONY: $(ALLPHONY)
+
+dist_data_DATA  = examples/blinker.c
+dist_data_DATA += examples/blinker.cpp

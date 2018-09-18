@@ -3,7 +3,7 @@ before_script:
     - tar xzf libardsim-last.tar.gz
     - (cd libardsim-*/ && ./configure --prefix=/tmp/libardsim && make && make install)
     - rm -rf libardsim-*
-    - ./autogen.sh
+    - ./bootstrap.sh
 
 stages:
     - build

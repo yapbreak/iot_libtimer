@@ -15,3 +15,5 @@ else
 doc:
 	@(echo "Please install doxygen to get actual documentation")
 endif
+
+dist_data_DATA = img/timer.png
