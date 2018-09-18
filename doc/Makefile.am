@@ -16,4 +16,5 @@ doc:
 	@(echo "Please install doxygen to get actual documentation")
 endif
 
+datadir= $(prefix)/share/@PACKAGE_NAME@/doc
 dist_data_DATA = img/timer.png

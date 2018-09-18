@@ -135,5 +135,6 @@ ALLPHONY += upload
 
 .PHONY: $(ALLPHONY)
 
+datadir = $(prefix)/share/@PACKAGE_NAME@/examples
 dist_data_DATA  = examples/blinker.c
 dist_data_DATA += examples/blinker.cpp

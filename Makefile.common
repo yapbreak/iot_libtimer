@@ -1,6 +1,7 @@
 AM_CFLAGS = -std=c11 -Wall -Wextra ${extra_CFLAGS}
 AM_CXXFLAGS = -std=c++11 -Wall -Wextra ${extra_CXXFLAGS}
 AM_LDFLAGS = ${extra_LDFLAGS}
+LIBVERSION = -version-info ${VERSION_CURRENT}:${VERSION_REVISION}:${VERSION_AGE}
 
 AM_CFLAGS += -I$(top_srcdir)/src
 AM_CFLAGS += -I$(top_srcdir)/
