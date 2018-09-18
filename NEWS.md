@@ -1,11 +1,11 @@
 # News
 
 
-## 1.1.8
+## 1.1.9
 
-Final state
+Version release
 
 2018-09-18	Adrien Oliva <olivaa+gitlab@yapbreak.fr>
 
-	* build(release): Prepare release 1.1.8
-	* fix(examples): Distribute examples folder
+	* build(release): Prepare release 1.1.9
+	* build(version): Update version in library
