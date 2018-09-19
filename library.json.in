@@ -14,13 +14,13 @@
     "license": "WTF-PL",
     "homepage": "@PACKAGE_URL@",
     "examples": [
-        "examples/*.c",
-        "examples/*.cpp"
+        "@PACKAGE_NAME@-@PACKAGE_VERSION@/examples/*.c",
+        "@PACKAGE_NAME@-@PACKAGE_VERSION@/examples/*.cpp"
     ],
     "export": {
         "include": [
-            "src/*.h",
-            "src/*.cpp"
+            "@PACKAGE_NAME@-@PACKAGE_VERSION@/src/*.h",
+            "@PACKAGE_NAME@-@PACKAGE_VERSION@/src/*.cpp"
         ]
     }
 }
