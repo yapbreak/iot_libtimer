@@ -8,19 +8,22 @@
         "url": "https://gitlab.yapbreak.fr/olivaa",
         "email": "@PACKAGE_BUGREPORT@"
     },
-    "downloadUrl": "https://ci.yapbreak.fr/job/release_manager/job/@PACKAGE_NAME@/lastSuccessfulBuild/artifact/@PACKAGE_NAME@-@PACKAGE_VERSION@.tar.gz",
+    "downloadUrl": "https://ci.yapbreak.fr/job/release_manager/job/@PACKAGE_NAME@/lastSuccessfulBuild/artifact/@PACKAGE_NAME@-@PACKAGE_VERSION@-repack.tar.gz",
     "frameworks": "arduino",
     "platforms": "*",
     "license": "WTF-PL",
     "homepage": "@PACKAGE_URL@",
     "examples": [
-        "@PACKAGE_NAME@-@PACKAGE_VERSION@/examples/*.c",
-        "@PACKAGE_NAME@-@PACKAGE_VERSION@/examples/*.cpp"
+        "examples/*.c",
+        "examples/*.cpp"
     ],
     "export": {
         "include": [
-            "@PACKAGE_NAME@-@PACKAGE_VERSION@/src/*.h",
-            "@PACKAGE_NAME@-@PACKAGE_VERSION@/src/*.cpp"
+            "src/*.h",
+            "src/*.cpp",
+            "examples/*",
+            "COPYING",
+            "library.json"
         ]
     }
 }

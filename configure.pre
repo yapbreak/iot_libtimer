@@ -173,7 +173,6 @@ AM_CONDITIONAL(DOXYGEN, [test "x${doxygen}" = "xyes"])
 
 # Generate files
 AC_CONFIG_FILES([platformio.ini
-                 library.properties
                  library.json
                  Makefile
                  utests/Makefile
